@@ -1,0 +1,63 @@
+﻿@model Post 
+
+@{ 
+    ViewBag.Title = Model.Title;
+    ViewBag.Description = Model.Descriptions;
+    ViewBag.Keywords = $"{Model.Tags?.Replace(",", " ")} {Model.Category}";
+
+}
+
+
+@*<h2>@Model.Title</h2>
+
+@if (!string.IsNullOrEmpty(Model.Image))
+{
+    var image_path = $"/image/{Model.Image}";
+    <img src ="@image_path" width="500" />
+}
+
+<p>
+    @Model.Body
+</p>*@
+
+<div class="container">
+    <div class="post no-shadow">
+        @if (!string.IsNullOrEmpty(Model.Image))
+        {
+            var image_path = $"/image/{Model.Image}";
+            <img src="@image_path"/>
+            <span class="title">
+                @Model.Title
+            </span>
+        }
+
+    </div>
+    <div class="post-body">
+        @Html.Raw(@Model.Body)
+        
+    </div>
+    <div class="comment-section">
+        @{
+            await Html.RenderPartialAsync("_MainComment", new CommentViewModel { postId = Model.id, MainCommentId = 0 });
+        }
+        @foreach (var c in Model.MainComments)
+        {
+            <p>
+                @c.Message --- @c.Created
+            </p>
+            <div style="margin-left:30px;">
+                <h4>Sub Comment</h4>
+                @{
+                    await Html.RenderPartialAsync("_MainComment", new CommentViewModel { postId = Model.id, MainCommentId = c.Id });
+                }
+
+                @foreach(var sc in c.SubComments)
+                {
+                    <p>
+                        @sc.Message --- @sc.Created
+                    </p>
+                }
+            </div>
+        }
+    </div>
+</div>

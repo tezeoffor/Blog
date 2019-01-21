@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Post>
+
+@{ 
+    ViewBag.Title = "Startups";
+    ViewBag.Description = "Small ideas";
+    ViewBag.Keywords = "Startups business ideas books";
+}
+@*<h2>Home Page!</h2>
+
+<img src="~/content/static/pexels-photo-1029604.jpeg" width="500" />*@
+
+<div class=" main-img">
+    <span class="title">Welcome to my Blog</span>
+</div>
+<div class="container">
+    @*<ul>
+            @foreach(var post in Model)
+            {
+            <li>
+                <a asp-controller="Home" asp-action="Post" asp-route-id="@post.id">
+                    @post.Title
+                </a>
+            </li>
+            }
+        </ul>*@
+
+    @foreach (var post in Model)
+    {
+        var image_path = $"/image/{post.Image}";
+    <a class = "post" asp-controller="Home" asp-action="Post" asp-route-id="@post.id">    
+        <img src="@image_path"/>
+        <span class="title">
+            @post.Title
+        </span></a>
+    }
+    </div>
